@@ -7,14 +7,20 @@
 	<script src="drawer.js""></script>
 	<script src=" wasm_exec.js"></script>
 	<script>
-		const go = new Go();
-		WebAssembly.instantiateStreaming(
-			fetch("luaDraw.wasm"),
-			go.importObject
-		).then(result => {
-			go.run(result.instance);
-			console.log("WASM Loaded");
-		});
+        const go = new Go();
+        
+        // Use non-streaming version
+        fetch("luaDraw.wasm")
+            .then(response => response.arrayBuffer())
+            .then(bytes => WebAssembly.instantiate(bytes, go.importObject))
+            .then(result => {
+                go.run(result.instance);
+                console.log("WASM Loaded");
+            })
+            .catch(err => {
+                console.error("Error loading WebAssembly:", err);
+                showError("Failed to load WebAssembly: " + err.message);
+            });
 	</script>
 	<script>
 		function sleep(ms) {

@@ -28,7 +28,7 @@ func runLuaInit(this js.Value, inputs []js.Value) any {
 	LS = lua.NewState()
 
 	dw = &drawWrapper.Drawer{
-		Interval: 1000,
+		Interval: 100,
 	}
 
 	LS.SetGlobal("draw", luar.New(LS, dw))

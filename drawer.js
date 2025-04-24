@@ -1,7 +1,17 @@
+var keysPressed = {};
+
+document.addEventListener('keydown', (event) => {
+    keysPressed[event.key] = true;
+});
+
+document.addEventListener('keyup', (event) => {
+    delete keysPressed[event.key];
+});
+
 function showError(error) {
 	const errordiv = document.getElementById("errordiv");
 	errordiv.innerHTML = error;
-	console.error(error)
+	console.log("Error:", error);
 }
 
 function clearCanvas() {

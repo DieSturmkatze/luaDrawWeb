@@ -10,8 +10,7 @@ import (
 const w, h = 640, 480
 
 type Drawer struct {
-	Interval        int
-	AutoClearScreen bool
+	Interval int
 }
 
 func (d *Drawer) Println(text string) {
@@ -36,6 +35,11 @@ func (d *Drawer) Circle(x, y, rad int, color string) {
 
 func (d *Drawer) PartialCircle(x, y, rad int, start, end float64, color string) {
 	js.Global().Call("drawCircle", x, y, rad, start, end, color)
+}
+
+func (d *Drawer) KeyDown(keycode int) bool {
+	//fmt.Println(js.Global().Get("keysPressed").Get("D").String())
+	return false
 }
 
 func (d *Drawer) ClearScreen() {

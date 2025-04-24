@@ -11,21 +11,24 @@ import (
 	luar "layeh.com/gopher-luar"
 )
 
+var LS *lua.LState
+var dw *drawWrapper.Drawer
+var done = make(chan struct{}) // Add this channel to block the main function
+
 func main() {
 	fmt.Println("Loaded WASM")
-	c := make(chan int)
 
 	js.Global().Set("runLua", js.FuncOf(runLua))
-
-	<-c
+	js.Global().Set("runLuaInit", js.FuncOf(runLuaInit))
+	js.Global().Set("goGetInterval", js.FuncOf(goGetInterval))
+	<-done // Block the main function from exiting
 }
 
-func runLua(this js.Value, inputs []js.Value) any {
-	LS := lua.NewState()
+func runLuaInit(this js.Value, inputs []js.Value) any {
+	LS = lua.NewState()
 
-	dw := &drawWrapper.Drawer{
-		Interval:        30,
-		AutoClearScreen: true,
+	dw = &drawWrapper.Drawer{
+		Interval: 1000,
 	}
 
 	LS.SetGlobal("draw", luar.New(LS, dw))
@@ -45,21 +48,26 @@ func runLua(this js.Value, inputs []js.Value) any {
 	}
 
 	js.Global().Call("clearCanvas")
-
-	for js.Global().Get("stop").String() != "stop" {
-		if dw.AutoClearScreen {
-			dw.ClearScreen()
-		}
-
-		err = LS.CallByParam(lua.P{
-			Fn:      LS.GetGlobal("update"),
-			NRet:    1,
-			Protect: true,
-		})
-		if err != nil {
-			js.Global().Call("showError", err.Error)
-			return ""
-		}
-	}
 	return ""
+}
+
+func runLua(this js.Value, inputs []js.Value) any {
+	//for js.Global().Get("stop").String() != "stop" {
+	fmt.Println("Update")
+	err := LS.CallByParam(lua.P{
+		Fn:      LS.GetGlobal("update"),
+		NRet:    1,
+		Protect: true,
+	})
+
+	if err != nil {
+		js.Global().Call("showError", err.Error)
+		return ""
+	}
+	//}
+	return ""
+}
+
+func goGetInterval(this js.Value, inputs []js.Value) any {
+	return dw.Interval
 }

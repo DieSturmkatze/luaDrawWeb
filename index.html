@@ -55,14 +55,14 @@
 
 
 	<span>Little drawing thing</span>
-	<canvas id="drawspace">
+	<canvas id="drawspace" width="680" height="480">
 
 	</canvas>
 
 	<textarea id="luascript" type="text">
 function init()
 	draw:Println("Hello from Lua")
-	draw.Interval = 200
+	draw.Interval = 50
 
 end
 
@@ -72,10 +72,10 @@ function update()
 	draw:Rect(100 + i, 0, 100, 50, "green")
 	i = i + 1
 
-	draw:Circle(50, 50, 50, "blue")
-	draw:PartialCircle(50, 100, 50, 0.0, 1.0, "blue")
-	draw:Text(100, 100, 20, "Hello LuaDraw", "yellow")
-	draw:FillRect(400 - i, 0, 50, 25, "black")
+	draw:Circle(150, 150, 150, "blue")
+	draw:PartialCircle(50, 100, 50, 0.0, 1.0, "yellow")
+	draw:Text(100, 100, 50, "Hello LuaDraw", "grey")
+	draw:FillRect(200 - i, 0, 50, 25, "black")
 	draw:Line(0, 0, 640, 480, "pink")
 
 end

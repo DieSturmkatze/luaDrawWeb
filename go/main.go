@@ -16,11 +16,11 @@ var dw *drawWrapper.Drawer
 var done = make(chan struct{}) // Add this channel to block the main function
 
 func main() {
-	fmt.Println("Loaded WASM")
 
 	js.Global().Set("runLua", js.FuncOf(runLua))
 	js.Global().Set("runLuaInit", js.FuncOf(runLuaInit))
 	js.Global().Set("goGetInterval", js.FuncOf(goGetInterval))
+	fmt.Println("Loaded WASM")
 	<-done // Block the main function from exiting
 }
 

@@ -72,7 +72,11 @@ function update()
 	draw:Rect(100 + i, 0, 100, 50, "green")
 	i = i + 1
 
-	draw:KeyDown(68)
+	draw:Circle(50, 50, 50, "blue")
+	draw:PartialCircle(50, 100, 50, 0.0, 1.0, "blue")
+	draw:Text(100, 100, 20, "Hello LuaDraw", "yellow")
+	draw:FillRect(400 - i, 0, 50, 25, "black")
+	draw:Line(0, 0, 640, 480, "pink")
 
 end
 	</textarea>

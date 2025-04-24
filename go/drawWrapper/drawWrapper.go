@@ -34,7 +34,11 @@ func (d *Drawer) Circle(x, y, rad int, color string) {
 }
 
 func (d *Drawer) PartialCircle(x, y, rad int, start, end float64, color string) {
-	js.Global().Call("drawCircle", x, y, rad, start, end, color)
+	js.Global().Call("drawPartialCircle", x, y, rad, start, end, color)
+}
+
+func (d *Drawer) Text(x, y, size int, text, color string) {
+	js.Global().Call("drawText", x, y, size, text, color)
 }
 
 func (d *Drawer) KeyDown(keycode int) bool {

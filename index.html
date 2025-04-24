@@ -1,11 +1,56 @@
-<head>
+<!DOCTYPE html>
+<html>
 
+<head>
+	<meta charset="UTF-8" />
+	<title>LuaDraw</title>
+	<script src="drawer.js""></script>
+	<script src="wasm_exec.js"></script>
+	<script>
+		const go = new Go();
+		WebAssembly.instantiateStreaming(
+			fetch("luaDraw.wasm"),
+			go.importObject
+		).then(result => go.run(result.instance));
+	</script>
+	<script>
+		var stop = "no";
+
+		function runClick() {
+			stop = "no";
+			console.log("Starting Execution");
+			const luascript = document.getElementById("luascript")
+			runLua(luascript.value)
+		}
+
+		function stopClick() {
+			stop = "stop";
+		}
+	</script>
 </head>
 
 <body>
+
+
 	<span>Little drawing thing</span>
 	<canvas id="drawspace">
-		
+
 	</canvas>
-	<input type="text">
+
+	<textarea id="luascript" type="text">
+function init()
+	draw:Println("Hello from Lua")
+end
+
+
+function update()
+	draw:Println("Hello from Lua")
+	draw:Rect(100, 100, 100, 100, "green")
+end
+	</textarea>
+	<button onclick="runClick()">Run</button>
+	<button onclick="stopClick()">Stop</button>
+	<div id="errordiv"></div>
 </body>
+
+</html>
